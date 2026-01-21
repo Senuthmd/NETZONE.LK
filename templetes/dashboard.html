@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - SENU MODZ{% endblock %}
+
+{% block content %}
+<div class="dashboard-container fade-in">
+    <h1>{{ owner }}'s VPN Dashboard</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <h2>Your V2Ray Configs</h2>
+    <div class="configs-grid">
+        {% for config in vpn_configs %}
+        <div class="config-card">
+            <img src="{{ url_for('static', filename=config.icon) }}" alt="{{ config.name }}" width="80">
+            <h3>{{ config.name }}</h3>
+            <input type="text" value="{{ config.v2ray }}" readonly>
+            <button onclick="copyConfig(this)">Copy</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>VPN Apps</h2>
+    <div class="apps-grid">
+        {% for app in vpn_apps %}
+        <div class="app-card">
+            <img src="{{ url_for('static', filename=app.icon) }}" alt="{{ app.name }}" width="80">
+            <h3>{{ app.name }}</h3>
+            <p>{{ app.platform }}</p>
+            <a href="{{ app.url }}" target="_blank" class="contact-link whatsapp-link">Download</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function copyConfig(btn){
+    const input = btn.previousElementSibling;
+    input.select();
+    input.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Config copied!");
+}
+</script>
+{% endblock %}
